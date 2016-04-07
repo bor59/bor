@@ -156,7 +156,10 @@ void __fastcall TForm1::Button3Click(TObject *Sender)
   Button2->Enabled=false;
   Button3->Enabled=false;
   Button5->Enabled=true;
-   
+   /*Graphics::TBitmap *bitmap=new Graphics::TBitmap;
+   bitmap->LoadFromFile("bin.bmp");
+   Image4->Canvas->Draw(20,0,bitmap);
+   Image4->Picture->SaveToFile("layer1.bmp");  */
 
   Image3->Picture->Bitmap->PixelFormat = pf24bit;
   Image3->Picture->Bitmap->Width = Image2->Width;
