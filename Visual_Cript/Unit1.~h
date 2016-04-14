@@ -17,25 +17,8 @@
 class TForm1 : public TForm
 {
 __published:	// IDE-managed Components
-        TImage *Image1;
         TOpenPictureDialog *OpenPictureDialog1;
         TSavePictureDialog *SavePictureDialog1;
-        TImage *Image2;
-        TImage *Image3;
-        TImage *Image4;
-        TButton *Button1;
-        TButton *Button2;
-        TButton *Button3;
-        TButton *Button4;
-        TEdit *Edit1;
-        TLabel *Label1;
-        TStatusBar *StatusBar1;
-        TRadioButton *RadioButton1;
-        TRadioButton *RadioButton2;
-        TRadioButton *RadioButton3;
-        TImage *Image5;
-        TButton *Button5;
-        TImage *Image6;
         TMainMenu *MainMenu1;
         TMenuItem *N1;
         TMenuItem *N2;
@@ -46,6 +29,29 @@ __published:	// IDE-managed Components
         TMenuItem *N7;
         TMenuItem *N8;
         TMenuItem *N9;
+        TPageControl *PageControl1;
+        TTabSheet *TabSheet1;
+        TLabel *Label1;
+        TButton *Button4;
+        TEdit *Edit1;
+        TRadioButton *RadioButton1;
+        TRadioButton *RadioButton2;
+        TRadioButton *RadioButton3;
+        TStatusBar *StatusBar1;
+        TButton *Button6;
+        TButton *Button3;
+        TButton *Button2;
+        TButton *Button1;
+        TImage *Image1;
+        TImage *Image3;
+        TImage *Image2;
+        TTabSheet *TabSheet2;
+        TImage *Image4;
+        TTabSheet *TabSheet4;
+        TImage *Image6;
+        TButton *Button5;
+        TButton *Button7;
+        TImage *Image5;
         void __fastcall FormCreate(TObject *Sender);
         void __fastcall Button4Click(TObject *Sender);
         void __fastcall Button1Click(TObject *Sender);
@@ -58,6 +64,8 @@ __published:	// IDE-managed Components
         void __fastcall N4Click(TObject *Sender);
         void __fastcall N10Click(TObject *Sender);
         void __fastcall N9Click(TObject *Sender);
+        void __fastcall Button6Click(TObject *Sender);
+        void __fastcall Button7Click(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
         __fastcall TForm1(TComponent* Owner);

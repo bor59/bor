@@ -39,6 +39,7 @@ void __fastcall TForm1::FormCreate(TObject *Sender)
  Button2->Enabled=false;
  Button3->Enabled=false;
  Button5->Enabled=false;
+
  //заполнение двумерных массивов
   //0                           1
   r1[0][0]=1; r1[0][1]=0;       r2[0][0]=0; r2[0][1]=1;
@@ -156,10 +157,7 @@ void __fastcall TForm1::Button3Click(TObject *Sender)
   Button2->Enabled=false;
   Button3->Enabled=false;
   Button5->Enabled=true;
-   /*Graphics::TBitmap *bitmap=new Graphics::TBitmap;
-   bitmap->LoadFromFile("bin.bmp");
-   Image4->Canvas->Draw(20,0,bitmap);
-   Image4->Picture->SaveToFile("layer1.bmp");  */
+
 
   Image3->Picture->Bitmap->PixelFormat = pf24bit;
   Image3->Picture->Bitmap->Width = Image2->Width;
@@ -266,6 +264,7 @@ void __fastcall TForm1::Button3Click(TObject *Sender)
       scanLine[x].rgbtBlue = h;
     }
   }
+  Image5->Left=+Image4->Height+10;  
   Image5->Picture->SaveToFile("layer2.bmp");
 }
 //---------------------------------------------------------------------------
@@ -292,31 +291,85 @@ void __fastcall TForm1::RadioButton3Click(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TForm1::Button5Click(TObject *Sender)
 {
+
+  Image6->Picture->Bitmap->PixelFormat = pf24bit;
+  Image6->Picture->Bitmap->Width = Image4->Width;
+  Image6->Picture->Bitmap->Height = Image4->Height;
+  Image4->Perform(WM_PAINT, (WPARAM)Image6->Picture->Bitmap->Canvas->Handle, 0);
+  BYTE  f;
+  for (int y = Image6->Picture->Height - 1; y >= 0; --y)
+  {
+    TRGBTriple* scanLine = (TRGBTriple*)Image6->Picture->Bitmap->ScanLine[y];
+    for (int x = Image6->Picture->Width - 1;  x >= 0; --x)
+    {
+      const BYTE gray = scanLine[x].rgbtRed + scanLine[x].rgbtGreen + scanLine[x].rgbtBlue;
+      if (gray >128)
+        s1[y][x]=0;
+      else s1[y][x]=1;;
+    }
+  }
+  Image6->Picture->Bitmap->PixelFormat = pf24bit;
+  Image6->Picture->Bitmap->Width = Image5->Width;
+  Image6->Picture->Bitmap->Height = Image5->Height;
+  Image5->Perform(WM_PAINT, (WPARAM)Image6->Picture->Bitmap->Canvas->Handle, 0);
+//  BYTE  f;
+  for (int y = Image6->Picture->Height - 1; y >= 0; --y)
+  {
+    TRGBTriple* scanLine = (TRGBTriple*)Image6->Picture->Bitmap->ScanLine[y];
+    for (int x = Image6->Picture->Width - 1;  x >= 0; --x)
+    {
+      const BYTE gray = scanLine[x].rgbtRed + scanLine[x].rgbtGreen + scanLine[x].rgbtBlue;
+      if (gray >128)
+        s2[y][x]=0;
+      else s2[y][x]=1;;
+    }
+  }
+ // Image4->Picture->SaveToFile("layer1.bmp");
+
+
+
 Button5->Enabled=false;
   Image6->Picture->Bitmap->PixelFormat = pf24bit;
   Image6->Picture->Bitmap->Width = Image5->Width;
   Image6->Picture->Bitmap->Height = Image5->Height;
   Image5->Perform(WM_PAINT, (WPARAM)Image6->Picture->Bitmap->Canvas->Handle, 0);
-  BYTE  f;
+//  BYTE  f;
   for (int i = Image6->Picture->Height - 1; i >= 0; --i)
   {
-    TRGBTriple* scanLine = (TRGBTriple*)Image6->Picture->Bitmap->ScanLine[i];
+  //  TRGBTriple* scanLine = (TRGBTriple*)Image6->Picture->Bitmap->ScanLine[i];
     for (int j = Image6->Picture->Width - 1;  j >= 0; --j)
     {
      // const BYTE gray = scanLine[j].rgbtRed + scanLine[j].rgbtGreen + scanLine[j].rgbtBlue;
-      if (s1[i][j]==s2[i][j])
+     /* if (s1[i][j]==s2[i][j])
         s3[i][j] = 0;
       else s3[i][j]=1;
       if (s3[i][j]==1)
         f=0;
-      else f=255;
+      else f=255;   */
+
+      if(s1[i][j]==s2[i][j])
+       s[i/2][j/2] = 0;
+      else s[i/2][j/2] = 1;
+    }
+  }
+  for (int i = Image6->Picture->Height/2 - 1; i >= 0; --i)
+  {
+    TRGBTriple* scanLine = (TRGBTriple*)Image6->Picture->Bitmap->ScanLine[i];
+    for (int j = Image6->Picture->Width/2 - 1;  j >= 0; --j)
+    {
+      if (s[i][j] == 0)
+        f = 255;
+      else f = 0;
 
       scanLine[j].rgbtGreen = f;
       scanLine[j].rgbtRed = f;
       scanLine[j].rgbtBlue = f;
     }
   }
-  Image6->Picture->SaveToFile("resultat.bmp");
+  Image6->Picture->Bitmap->Width = Image4->Width/2;
+  Image6->Picture->Bitmap->Height = Image4->Height/2;
+  Image6->Picture->SaveToFile("resultat.jpg");
+  // StatusBar1->Panels->Items[0]->Text="";
 }
 //---------------------------------------------------------------------------
 
@@ -325,7 +378,7 @@ Button5->Enabled=false;
 
 void __fastcall TForm1::N4Click(TObject *Sender)
 {
-  Close();        
+  Close();
 }
 //---------------------------------------------------------------------------
 
@@ -341,4 +394,28 @@ void __fastcall TForm1::N9Click(TObject *Sender)
  Form2->Show();        
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TForm1::Button6Click(TObject *Sender)
+{
+  Close();        
+}
+//---------------------------------------------------------------------------
+
+
+
+void __fastcall TForm1::Button7Click(TObject *Sender)
+{
+  Graphics::TBitmap*   gBitmap1 = new Graphics::TBitmap;
+  Graphics::TBitmap*   gBitmap2 = new Graphics::TBitmap;
+  gBitmap1->LoadFromFile("layer1.bmp");
+  gBitmap2->LoadFromFile("layer2.bmp");
+  Image4->Picture->Bitmap = gBitmap1;
+  Image5->Picture->Bitmap = gBitmap2;
+
+  Button5->Enabled = true;
+  Image5->Left=+Image4->Height+10;
+}
+//---------------------------------------------------------------------------
+
+
 
